@@ -1192,7 +1192,7 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 				}
 				
 				// Make sure image was saved
-			 	if( !$img_save ) {
+			 	if( !$img_saved ) {
 			 		return false;
 			 	}
 			 	
@@ -1200,10 +1200,11 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 			}
 			//
 			
-			chmod($thumb_path . $thumb_name, 0777);
-			$uri = "thumbs/" . $thumb_name;
+			chmod($thumb_path . $thumb_name, 0777);	
 
 		}
+		
+		$uri = "thumbs/" . $thumb_name;
 		
 		return $uri;
 	}
