@@ -11,12 +11,15 @@ if ( ! defined('EXT')) exit('Invalid file request');
 //
 // In case exif is not enabled for this PHP installation
 //
-if ( ! function_exists( 'exif_imagetype' ) ) {
-	function exif_imagetype ( $filename ) {
-	  if ( ( list($width, $height, $type, $attr) = getimagesize( $filename ) ) !== false ) {
+if ( ! function_exists( 'exif_imagetype' ) )
+{
+	function exif_imagetype ( $filename )
+	{
+	  if ( ( list($width, $height, $type, $attr) = getimagesize( $filename ) ) !== FALSE )
+	  {
 		  return $type;
 	  }
-	return false;
+	return FALSE;
 	}
 }
 //
@@ -101,7 +104,8 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 	 * @return string  The modified $out
 	 * @see    http://expressionengine.com/developers/extension_hooks/show_full_control_panel_end/
 	 */
-	function show_full_control_panel_end($out) {
+	function show_full_control_panel_end($out)
+	{
 		global $SESS, $DSP;
 		@session_start();
 	
@@ -109,21 +113,25 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 		
 		//
 		// Display any errors		
-		if( !empty($_SESSION['ngen']['ngen-file-errors']) ) {
+		if( !empty($_SESSION['ngen']['ngen-file-errors']) )
+		{
 			$error_output = "<div class='ngen-file-errors'><ul>\n";
-			foreach($_SESSION['ngen']['ngen-file-errors'] as $key => $error) {
+			foreach($_SESSION['ngen']['ngen-file-errors'] as $key => $error)
+			{
 				$error_output .= "<li";
 				
 				end($_SESSION['ngen']['ngen-file-errors']);
 				
-				if( $key == key($_SESSION['ngen']['ngen-file-errors']) ) {
+				if( $key == key($_SESSION['ngen']['ngen-file-errors']) )
+				{
 					$error_output .= " class='last'";
 				}
 				$error_output .= ">" . $error . "</li>\n";
 			}
 			$error_output .= "</div>\n";
 			
-			if( preg_match("/\<div id=('|\")?contentNB('|\")?\>/", $out, $error_matches) ) {
+			if( preg_match("/\<div id=('|\")?contentNB('|\")?\>/", $out, $error_matches) )
+			{
 				$out = str_replace($error_matches[0], $error_matches[0] . $error_output, $out);
 			}
 		}
@@ -131,14 +139,17 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 		
 		//
 		// Display any messages	
-		if( !empty($_SESSION['ngen']['ngen-file-messages']) ) {
+		if( ! empty($_SESSION['ngen']['ngen-file-messages']) )
+		{
 			$msg_output = "<div class='ngen-file-messages'><ul>\n";
-			foreach($_SESSION['ngen']['ngen-file-messages'] as $error) {
+			foreach($_SESSION['ngen']['ngen-file-messages'] as $error)
+			{
 				$msg_output .= "<li>" . $error . "</li>\n";
 			}
 			$msg_output .= "</div>\n";
 			
-			if( preg_match("/\<div id=('|\")?contentNB('|\")?\>/", $out, $msg_matches) ) {
+			if( preg_match("/\<div id=('|\")?contentNB('|\")?\>/", $out, $msg_matches) )
+			{
 				$out = str_replace($msg_matches[0], $msg_matches[0] . $msg_output, $out);
 			}
 		}
@@ -149,7 +160,8 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 		if(preg_match("/name=.entryform./", $out, $matches))
 		{
 			// Check to see if we already have the multipart stuff in the tag, add it if we don't
-			if(! preg_match("/enctype=\"multipart\/form-data\"/", $matches[0]) ) {
+			if( ! preg_match("/enctype=\"multipart\/form-data\"/", $matches[0]) )
+			{
 				$out = str_replace($matches[0], $matches[0] . " enctype=\"multipart/form-data\"", $out);
 			}
 		}
@@ -250,7 +262,8 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 		$hide_choose_existing = @$field_settings['hide_existing'];
 		
 		// Check if field_data is an array or not
-		if( !is_array($field_data) ) {
+		if( ! is_array($field_data) )
+		{
 			$file_name = $field_data;
 		} else {
 			$file_name = array_key_exists('file_name', $field_data) ? $field_data['file_name'] : '';
@@ -260,15 +273,17 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 		// Make sure we're not on the edit field screen
 		// this helps us avoid issues when trying to retrieve upload settings and file lists
 		//
-		$this->edit_field = false;
+		$this->edit_field = FALSE;
 		
-		if($IN->GBL('M', 'GET') == 'blog_admin' AND $IN->GBL('P', 'GET') == 'edit_field') {
-			$this->edit_field = true;
+		if($IN->GBL('M', 'GET') == 'blog_admin' AND $IN->GBL('P', 'GET') == 'edit_field')¨
+		{
+			$this->edit_field = TRUE;
 		}
 		//
 		
 		//
-		if(!$this->edit_field) {
+		if( ! $this->edit_field )
+		{
 			$this->_get_upload_prefs($field_settings['options']);
 			
 			$file_path = $this->upload_prefs['server_path'] . $file_name;
@@ -279,7 +294,8 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 			
 		$file_field = "<div class='ngen-file-field-block'>";
  	
-		if( isset($file_name) AND $file_name ) {
+		if( isset($file_name) AND $file_name )
+		{
 			
 			$file_field .= "<div class='ngen-file-field-data'>";
 			
@@ -288,7 +304,8 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 			$file_kind_text = $LANG->line('file_kind');
 			
 			// Is file an image?
-			if($this->_is_image($file_path)) {
+			if($this->_is_image($file_path))
+			{
 				$file_kind_text = $LANG->line('image_kind');
 			
 				// if thumbnail doesn't exist, create it.
@@ -297,7 +314,8 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 				$thumbnail = $this->upload_prefs['server_url'] . $img_info['thumbnail'];
 				
 				// Legacy for existing files
-				if(!file_exists($this->upload_prefs['server_path'] . $img_info['thumbnail'])) {
+				if( ! file_exists($this->upload_prefs['server_path'] . $img_info['thumbnail']) )
+				{
 					$thumbnail = $this->upload_prefs['server_url'] . $this->_create_thumbnail($file_path);
 				} 
 				
@@ -312,7 +330,8 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 			$file_field .= "<div class='ngen-ff-choice' style='display: none;'>\n";
 			$file_field .= "<ul>\n";
 			// Hide remove option
-			if(!$hide_choose_existing) {
+			if( ! $hide_choose_existing )
+			{
 				$file_field .= "<li class='ngen-ff-choice-remove'><a href='#'>" . str_replace('%{file_kind}', $file_kind_text, $LANG->line('choice_remove')) . "</li>";
 			}
 			//
@@ -333,7 +352,8 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 			$file_field .= "<input type='hidden' name='$del_field_name' />\n";
 			
 			// Existing file select
-			if(!$hide_choose_existing) {
+			if( ! $hide_choose_existing)
+			{
 				$file_field .= "<div class='ngen-file-existing' style='display: none;'>\n";
 				$file_field .= $this->_get_existing_select($existing_field_name);
 				$file_field .= "</div>\n";
@@ -350,7 +370,8 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 			$file_field .= "<input type='hidden' name='" . $field_name . "[file_name]' />\n";
 			
 			// Existing file select
-			if(!$hide_choose_existing) {
+			if( ! $hide_choose_existing )
+			{
 				$file_field .= "<div class='ngen-file-existing' style='display: none;'>\n";
 				$file_field .= $this->_get_existing_select($existing_field_name);
 				$file_field .= "</div>\n";
@@ -415,7 +436,8 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 		{
 			$this->_get_upload_prefs($field_settings['options']);
 			
-			if($this->_is_image($this->upload_prefs['server_path'] . $field_data['delete'])) {
+			if($this->_is_image($this->upload_prefs['server_path'] . $field_data['delete']))
+			{
 				$image_info = $this->_image_info($this->upload_prefs['server_path'] . $field_data['delete']);
 				@unlink($this->upload_prefs['server_path'] . $image_info['thumbnail']);
 			}
@@ -430,14 +452,16 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 		//if(empty($field_data['file_name']) && ( $_FILES[$field_name]['name'] != "" || $field_data['existing'] != "" ) ) {
 			
 		// update by Brandon Kelly for SAEF compatibility
-		if(is_array($field_data) && empty($field_data['file_name']) && ( ( isset($_FILES[$field_name]) && $_FILES[$field_name]['name'] ) || (isset($field_data['existing']) && $field_data['existing']) ) ) {
+		if(is_array($field_data) && empty($field_data['file_name']) && ( ( isset($_FILES[$field_name]) && $_FILES[$field_name]['name'] ) || (isset($field_data['existing']) && $field_data['existing']) ) )
+		{
 		
 			//unset($field_data['file_name']);
 			$existing_file = (isset($field_data['existing'])) ? $field_data['existing'] : NULL;
 			unset($field_data);
 			unset($_POST[$field_name]);
 
-			if($existing_file) {
+			if ($existing_file)
+			{
 				// If using an existing file
 				$file_name = $existing_file;
 			} else {
@@ -470,8 +494,8 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 	
 		// IF SAEF - show errors 
 		//
-		if($IN->GBL('C', 'GET') == '') {
-
+		if ($IN->GBL('C', 'GET') == '')
+		{
 			$this->_display_errors_SAEF();
 			return $return;
 		  
@@ -514,7 +538,8 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 				
 				$file_info = pathinfo($cell_data['delete']);
 			
-				if($this->_is_image($this->upload_prefs['server_path'] . $cell_data['delete'])) {
+				if($this->_is_image($this->upload_prefs['server_path'] . $cell_data['delete']))
+				{
 					$image_info = $this->_image_info($this->upload_prefs['server_path'] . $cell_data['delete']);
 					@unlink($this->upload_prefs['server_path'] . $image_info['thumbnail']);
 				}
@@ -532,17 +557,19 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 		// update by Brandon Kelly for SAEF compatibility
 		//if(empty($cell_data['file_name']) && ( ( isset($_FILES[$field_name]) && $_FILES[$field_name]['name'][$row_count][$col_id] ) || (isset($cell_data['existing']) && !empty($cell_data['existing']) ) ) ) {
 		
-		if(
-			$cell_data['file_name'] == '' &&
+		if (
+		 	$cell_data['file_name'] == '' &&
 			(
 				( isset($_FILES[$field_name]) && $_FILES[$field_name]['name'][$row_count][$col_id] != '' ) ||
 				( $cell_data['existing'] != '' )
 			)
-		) {
+		)
+		{
 		
 			$existing_file = (isset($cell_data['existing']) && !empty($cell_data['existing']) ) ? $cell_data['existing'] : FALSE;
 			
-			if($existing_file) {
+			if ($existing_file)
+			{
 				// If using existing file
 				$file_name = $cell_data['existing'];
 			} else {
@@ -563,7 +590,8 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 		} else {
 		
 			// Unset to make sure cell is actually empty if no data is stored
-			if(!$cell_data['file_name']) {
+			if( ! $cell_data['file_name'])
+			{
 				//unset($cell_data['file_name']);
 				unset($_POST[$field_name . "_" . $row_count . "_" . $col_id]);
 				
@@ -576,7 +604,8 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 		
 		// IF SAEF - show errors 
 		//
-		if($IN->GBL('C', 'GET') == '') {
+		if ($IN->GBL('C', 'GET') == '')
+		{
 			return $this->_display_errors_SAEF();
 		} else {
 			return $return;
@@ -593,9 +622,10 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 	 * 
 	 * @param  array  $upload_info    array built from instance's $_FILES data
 	 * @param  array  $settings  			The cell/field's settings
-	 * @return mixed	$file_name 			or false if an error
+	 * @return mixed	$file_name 			or FALSE if an error
 	 */
-	function upload_file($upload_info, $settings) {
+	function upload_file($upload_info, $settings)
+	{
 		global $LANG, $SESS, $IN, $DSP, $FNS, $EE;
 		@session_start();
 		
@@ -608,7 +638,8 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 		$file_error = $upload_info['error'];
 		$file_size = $upload_info['size'];
 				
-		if($file_name) {
+		if ($file_name)
+		{
 				
 			// Clean file name
 			$file = $this->_pieces($file_name);
@@ -626,9 +657,9 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 			$max_img_height = $this->upload_prefs['max_height'];
 			
 			// Are any of the file sizes too big?
-			if($max_file_size != '')
+			if ($max_file_size != '')
 			{
-				if($file_size > $max_file_size)
+				if ($file_size > $max_file_size)
 				{
 					$file_size_error = str_replace(array('%{file_name}', '%{max_size}'), array($file_name, $this->_size_readable($max_file_size, 'GB')), $LANG->line('error_file_size'));
 				
@@ -636,7 +667,7 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 					
 					$this->_error_message();
 					
-					return false;
+					return FALSE;
 				}
 			}
 			//
@@ -644,32 +675,35 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 			// Is file of valid type? Applies only if limited to image type
 			$is_image = exif_imagetype($file_tmp_name);
 			
-			if($allowed_types == 'img' && $is_image == false) {
+			if ($allowed_types == 'img' && $is_image == FALSE)
+			{
 				$_SESSION['ngen']['ngen-file-errors'][] = str_replace('%{file_name}', $file_name, $LANG->line('error_file_not_image'));
 				
 				$this->_error_message();
 				
 				unlink($file_tmp_name);
-				return false;
+				return FALSE;
 			}
 			//
 			
 			// If file is an image, are it's dimensions too large?
 			list($img_width, $img_height) = getimagesize($file_tmp_name);
 			
-			if( $is_image && (($max_img_width > 0 && $img_width > $max_img_width) || ($max_img_height > 0 && $img_height > $max_img_height)) ) {
+			if ( $is_image && (($max_img_width > 0 && $img_width > $max_img_width) || ($max_img_height > 0 && $img_height > $max_img_height)) )
+			{
 				$_SESSION['ngen']['ngen-file-errors'][] = str_replace(array('%{file_name}', '%{img_width}', '%{img_height}', '%{max_width}', '%{max_height}'), array($file_name, $img_width, $img_height, $max_img_width, $max_img_height), $LANG->line('error_image_dimensions'));
 				
 				$this->_error_message();
 				
 				unlink($file_tmp_name);
-				return false;
+				return FALSE;
 			}
 			//
 			
 			//
 			// Check if file exists already, if it does add an increment to the file name
-			if( file_exists($upload_path . $file_name) ) {
+			if ( file_exists($upload_path . $file_name) )
+			{
 				$matching_files = glob($upload_path . $file['name'] . "*" . $file['ext']);
 	
 				// Find highest number, add 1 and set new $file_name
@@ -690,13 +724,13 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 			//die("Uploading to: $upload_path");
 			
 			// Do the Upload
-			if(@move_uploaded_file($file_tmp_name, $upload_path . $file_name) === FALSE)
+			if (@move_uploaded_file($file_tmp_name, $upload_path . $file_name) === FALSE)
 			{
 				$_SESSION['ngen']['ngen-file-errors'][] = str_replace('%{file_name}', $file_name, $LANG->line('error_file_upload'));
 				
 				$this->_error_message();
 				
-				return false;
+				return FALSE;
 			} else {
 				chmod($upload_path . $file_name, 0777);
 				if( $this->_is_image($upload_path . $file_name) ) {
@@ -729,11 +763,13 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 	
 		$r = '';
 		
-		if($field_settings['options'] && $field_data) {
+		if ($field_settings['options'] && $field_data)
+		{
 			
 			// Added by Fred Boyle - 2009.04.21
 			// Check if field_data is an array or not
-			if( !is_array($field_data) ) {
+			if ( ! is_array($field_data) )
+			{
 				$file_name = $field_data;
 			} else {
 				//$file_name = array_key_exists('file_name', $field_data) ? $field_data['file_name'] : '';
@@ -741,16 +777,19 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 			}
 			
 			// If show param is set to filename, only show file name
-			if(isset($params['show']) && strtolower($params['show']) == 'filename') {
+			if (isset($params['show']) && strtolower($params['show']) == 'filename')
+			{
 				$r = $file_name;
 				return $r;
 			}
 			
-			if( !empty($file_name) ) {
+			if ( ! empty($file_name) )
+			{
 				$this->_get_upload_prefs($field_settings['options']);
 				
 				// If full_url param is set to yes, return full URL w/ hostname etc
-				if(isset($params['full_url']) && strtolower($params['full_url']) == 'yes') {
+				if (isset($params['full_url']) && strtolower($params['full_url']) == 'yes')
+				{
 					$file_url = $this->upload_prefs['server_url'] . $file_name;
 					$r = $file_url;
 				} else {
@@ -810,9 +849,11 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 	// Retrieves the upload preferences for an upload location
 	// returns upload_prefs array
 	//
-	function _get_upload_prefs($u_id) {
+	function _get_upload_prefs($u_id)
+	{
 		
-		if( !isset($this->upload_prefs['loc_id']) || $this->upload_prefs['loc_id'] != $u_id ) {
+		if ( ! isset($this->upload_prefs['loc_id']) || $this->upload_prefs['loc_id'] != $u_id  )
+		{
 			global $DB, $FNS, $PREFS;
 			
 			$query = $DB->query("SELECT * FROM " . $this->db_prefix . "_upload_prefs WHERE id = $u_id");
@@ -823,7 +864,8 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 			// Is this a relative path?
 			// - check if path starts with ..
 			//
-			if( substr($this->upload_prefs['server_path'], 0, 2) == '..' ) {
+			if ( substr($this->upload_prefs['server_path'], 0, 2) == '..' )
+			{
 				// found relative path, turn it into a proper absolute one
 				// Use the PATH constant since it points to the CP path
 				//$this->upload_prefs['server_path'] = PATH . $this->upload_prefs['server_path'];
@@ -840,7 +882,8 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 			$this->upload_prefs['server_url'] = $query->row['url'];
 			
 			// If the server URL is relative instead of a full URL then build a complete URL w/ hostname etc.
-			if( strtolower(substr($this->upload_prefs['server_url'], 0, 5)) != 'http:' ) {
+			if ( strtolower(substr($this->upload_prefs['server_url'], 0, 5)) != 'http:' )
+			{
 				$this->upload_prefs['server_url'] = $FNS->remove_double_slashes( $PREFS->ini('site_url') . $this->upload_prefs['server_url'] );
 			}
 			
@@ -858,7 +901,8 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 	// Build or retrieve existing file list select/drop-down
 	// returns HTML
 	//
-	function _get_existing_select($field_name) {
+	function _get_existing_select($field_name)
+	{
 		global $LANG, $SESS;
 		
 		//preg_match("~(.*?)\[.*~", $field_name, $field_matches);
@@ -869,7 +913,8 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 		$loc_id = $this->upload_prefs['loc_id'];
 		
 		// If the existing file drop down already exists in the session use it, otherwise generate it
-		if( isset($_SESSION['ngen']['ngen-file-existing'][$loc_id]) ) {
+		if ( isset($_SESSION['ngen']['ngen-file-existing'][$loc_id]) )
+		{
 			
 			// Make sure select has the proper field name
 			$existing_html = "<select name='$field_name'>\n";
@@ -881,8 +926,9 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 			$existing_html = "<option value=''>" . $LANG->line('option_choose_existing') . "</option>\n";
 			
 			// No list to fetch if editing custom field
-			if(!$this->edit_field) {		
-				$existing_html .= $this->_get_file_list($this->upload_prefs['server_path'], true);
+			if ( ! $this->edit_field )
+			{		
+				$existing_html .= $this->_get_file_list($this->upload_prefs['server_path'], TRUE);
 			}
 			
 			$existing_html .= "</select>\n";
@@ -903,7 +949,8 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 	// Retrieve list of files in folder
 	// option to return as array or options for a select field
 	//
-	function _get_file_list($path, $as_options = false) {
+	function _get_file_list($path, $as_options = FALSE)
+	{
 		global $LANG;
 		
 		$LANG->fetch_language_file('ngen_file_field');
@@ -914,32 +961,38 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 		$file_list = array();
 		
 		// if path doesn't exist, create it
-		if(!file_exists($path)) {  
+		if ( ! file_exists($path) )
+		{  
 			$create_dir = mkdir($path, 0777);
 			chmod($path, 0777);
 			
 			// Possible error fix to be tested, testing for failure of directory creation 
-			if(!$create_dir) {
+			if ( ! $create_dir )
+			{
 			
 				$error_line = str_replace(array('%{upload_path}', '%{upload_edit_link}'), array($path, BASE . "&C=admin&M=blog_admin&P=edit_upload_pref&id=" . $this->field_settings['options']), $LANG->line('error_file_path'));
 			
-				if(!in_array($error_line, $_SESSION['ngen']['ngen-file-errors'])) {
+				if ( ! in_array($error_line, $_SESSION['ngen']['ngen-file-errors']) )
+				{
 					$_SESSION['ngen']['ngen-file-errors'][] = $error_line;
 				}
-				return false;
+				return FALSE;
 			}
 		}
 		//
 		
 		$dir = new DirectoryIterator($path);
 		
-		foreach($dir as $fileinfo) {
-			if(!$fileinfo->isDir()) {
+		foreach($dir as $fileinfo)
+		{
+			if ( ! $fileinfo->isDir() )
+			{
 				$filename = $fileinfo->getFilename();
 			
 				$file_list[] = $filename;
 				
-				if( $this->_is_image($path . $filename) ) {
+				if( $this->_is_image($path . $filename) )
+				{
 					$thumb = $this->_create_thumbnail($path . $filename);
 				}
 				
@@ -950,13 +1003,16 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 		
 		//$output .= "<option>$path</option>\n";
 		
-		foreach($file_list as $key => $file) {
+		foreach($file_list as $key => $file)
+		{
 		
-			if( substr($file, 0, 1) == "." ) {
+			if( substr($file, 0, 1) == "." )
+			{
 				continue;
 			}
 		
-			if($as_options) {
+			if($as_options)
+			{
 				$output .= "<option value='$file'>$file</option>\n";
 			} else {
 				$output .= $file . "\n";
@@ -970,7 +1026,8 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 	//
 	// Returns array containing filename, width, height
 	//
-	function _image_info($file) {
+	function _image_info($file)
+	{
 		// legacy for MH File compatibility
 		$file = trim($file);
 	
@@ -995,10 +1052,11 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 	//
 	// Checks if a file is an image
 	//
-	function _is_image($file) {
+	function _is_image($file)
+	{
 		global $FNS;
 		
-		$is_image = false;
+		$is_image = FALSE;
 		
 		// legacy for MH File compatibility
 		$file = trim($file);
@@ -1009,14 +1067,15 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 		// Check to make sure file is at least 12bytes, otherwise fail as not image - causes issues otherwise
 		//
 		
-		if(file_exists($file) && filesize($file) > 11) {
+		if (file_exists($file) && filesize($file) > 11)
+		{
 					
 			switch( @exif_imagetype($file) ) {
 				case IMAGETYPE_GIF:
 				case IMAGETYPE_BMP:
 				case IMAGETYPE_JPEG:
 				case IMAGETYPE_PNG:
-					$is_image = true;
+					$is_image = TRUE;
 					break;
 			}
 		
@@ -1029,33 +1088,36 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 	//
 	// Creates a thumbnail and returns the relative path to it
 	//
-	function _create_thumbnail($file, $width = 50, $height = 50) {
-		global $LANG;
+	function _create_thumbnail($file, $width = 50, $height = 50)
+	{
+      global $LANG;
 		
-		$LANG->fetch_language_file('ngen_file_field');
+      $LANG->fetch_language_file('ngen_file_field');
 	
-		$uri = '';
+      $uri = '';
 		
-		// legacy for MH File compatibility
-		$file = trim($file);
+      // legacy for MH File compatibility
+      $file = trim($file);
 		
-		$file_info = pathinfo($file);
-		$filename_noext = basename($file_info['basename'], "." . $file_info['extension']);
+      $file_info = pathinfo($file);
+      $filename_noext = basename($file_info['basename'], "." . $file_info['extension']);
+
+      $server_path = $file_info['dirname'];
+      $thumb_path = $server_path . "/thumbs/";
+      $filename = $file_info['basename'];
+      //$thumb_name = $filename_noext . "_thumb.jpg";
+      $thumb_name = $filename_noext . "_thumb." . $file_info['extension'];
 		
-		$server_path = $file_info['dirname'];
-		$thumb_path = $server_path . "/thumbs/";
-		$filename = $file_info['basename'];
-		//$thumb_name = $filename_noext . "_thumb.jpg";
-		$thumb_name = $filename_noext . "_thumb." . $file_info['extension'];
-		
-		// if file is newer than thumb recreate the thumb
-		if( !file_exists($thumb_path . $thumb_name) || (filemtime($file) > filemtime($thumb_path . $thumb_name)) ) {
+      // if file is newer than thumb recreate the thumb
+      if ( ! file_exists($thumb_path . $thumb_name) || (filemtime($file) > filemtime($thumb_path . $thumb_name)) )
+      {
 		
 			$image_info = $this->_image_info($file);
 			
 			// If image is smaller than thumbnail size, don't resize/create thumb just copy
-			if($image_info['width'] < $width && $image_info['height'] < $height) {
-			//if(false == true) {
+			if ($image_info['width'] < $width && $image_info['height'] < $height)
+			{
+			//if(FALSE == TRUE) {
 				
 				copy($file, $thumb_path . $thumb_name);
 				
@@ -1070,10 +1132,11 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 				@ini_set("memory_limit","256M");
 				
 			
-				switch( $image_info['image_type'] ) {
+				switch( $image_info['image_type'] )
+				{
 					case IMAGETYPE_GIF:
 						$im = imagecreatefromgif($file);
-						$blending = true;
+						$blending = TRUE;
 						break;
 						
 					case IMAGETYPE_JPEG:
@@ -1082,102 +1145,111 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 					
 					case IMAGETYPE_PNG:
 						$im = imagecreatefrompng($file);
-						$blending = false;
+						$blending = FALSE;
 						break;
 				}
 				
-		    $width_old = $image_info['width'];
-		    $height_old = $image_info['height'];
+            $width_old = $image_info['width'];
+            $height_old = $image_info['height'];
 		    
-		    // Make sure we don't distort image, crop if needed
-				$int_width = 0;
-				$int_height = 0;
-				
-				$adjusted_height = $height;
-				$adjusted_width = $width;
-				
-				$wm = $width_old/$width;
-				$hm = $height_old/$height;
-				$h_height = $height/2;
-				$w_height = $width/2;
+            // Make sure we don't distort image, crop if needed
+			   $int_width = 0;
+   			$int_height = 0;
+		
+   			$adjusted_height = $height;
+   			$adjusted_width = $width;
+		
+   			$wm = $width_old/$width;
+   			$hm = $height_old/$height;
+   			$h_height = $height/2;
+   			$w_height = $width/2;
+			
+   			$ratio = $width/$height;
+   			$old_img_ratio = $width_old/$height_old;
 					
-				$ratio = $width/$height;
-				$old_img_ratio = $width_old/$height_old;
-					
-				if ($old_img_ratio > $ratio) 
-				{
-					$adjusted_width = $width_old / $hm;
-					$half_width = $adjusted_width / 2;
-					$int_width = $half_width - $w_height;
-				} 
-				else if($old_img_ratio <= $ratio) 
-				{
-					$adjusted_height = $height_old / $wm;
-					$half_height = $adjusted_height / 2;
-					$int_height = $half_height - $h_height;
-				}
-		    //
+   			if ($old_img_ratio > $ratio) 
+   			{
+   				$adjusted_width = $width_old / $hm;
+   				$half_width = $adjusted_width / 2;
+   				$int_width = $half_width - $w_height;
+   			}
+   			else if($old_img_ratio <= $ratio) 
+   			{
+   				$adjusted_height = $height_old / $wm;
+   				$half_height = $adjusted_height / 2;
+   				$int_height = $half_height - $h_height;
+   			}
+            //
 		    
 		    
-		    // If setting set to high quality thumbnails
-		    if( $this->site_settings['quality_setting'] == 'y' ) {
-			    $nm = imagecreatetruecolor($width, $height);
-			  } else {
-			  	$nm = imagecreate($width, $height);
-			  }
-		    //
-		    // Dirtier thumbnails but less memory usage?
-		    //$nm = imagecreate($width, $height);
+            // If setting set to high quality thumbnails
+            if( $this->site_settings['quality_setting'] == 'y' )
+            {
+               $nm = imagecreatetruecolor($width, $height);
+            } else {
+               $nm = imagecreate($width, $height);
+            }
+            //
+            // Dirtier thumbnails but less memory usage?
+            //$nm = imagecreate($width, $height);
 		    
-		    // If GIF/PNG preserve transparency
-		    if( $image_info['image_type'] == IMAGETYPE_GIF || $image_info['image_type'] == IMAGETYPE_PNG ) {		  	
-			  	// find the existing transparent color if it exists
-			  	$transparencyIndex = imagecolortransparent($im);
+            // If GIF/PNG preserve transparency
+            if( $image_info['image_type'] == IMAGETYPE_GIF || $image_info['image_type'] == IMAGETYPE_PNG )
+            {
+			  	   // find the existing transparent color if it exists
+			  	   $transparencyIndex = imagecolortransparent($im);
 			  	
-			  	if ($transparencyIndex >= 0) {
-			  		$transparencyColor = imagecolorsforindex($im, $transparencyIndex);
-			  	}
+			  	   if ($transparencyIndex >= 0)
+               {
+			  		   $transparencyColor = imagecolorsforindex($im, $transparencyIndex);
+			  	   }
 			  	
-			  	$transparencyIndex = imagecolorallocate($new_image, $transparencyColor['red'], $transparencyColor['green'], $transparencyColor['blue']);
+               $transparencyIndex = imagecolorallocate($new_image, $transparencyColor['red'], $transparencyColor['green'], $transparencyColor['blue']);
 			  	
-			  	// allocate a color for thumbnail  
-		    	//$background = imagecolorallocate($nm, 0, 0, 0);  
-		    	//imagefill($nm, 0, 0, $transparencyIndex);
+               // allocate a color for thumbnail  
+               //$background = imagecolorallocate($nm, 0, 0, 0);  
+               //imagefill($nm, 0, 0, $transparencyIndex);
 		    	
-		    	// define a color as transparent  
-		    	imagecolortransparent($nm, $transparencyIndex);
-		    	// set the blending mode for thumbnail
-		    	imagealphablending($nm, $blending);
-		    	// set the flag to save alpha channel
-		    	imagesavealpha($nm, true);
-		    }
-		    //
+               // define a color as transparent  
+               imagecolortransparent($nm, $transparencyIndex);
+               // set the blending mode for thumbnail
+               imagealphablending($nm, $blending);
+               // set the flag to save alpha channel
+               imagesavealpha($nm, TRUE);
+            }
+            //
 		    
-		    imagecopyresampled($nm, $im, 0, 0, 0, 0, $adjusted_width, $adjusted_height, $width_old, $height_old); 
+            imagecopyresampled($nm, $im, 0, 0, 0, 0, $adjusted_width, $adjusted_height, $width_old, $height_old); 
 		    
-		    imagedestroy($im);
+            imagedestroy($im);
 		      
-		    if(!file_exists($thumb_path)) {  
+            if( ! file_exists($thumb_path) )
+            {
 					$create_dir = mkdir($thumb_path, 0777);
 					chmod($thumb_path, 0777);
 					
 					
 					// Testing for failure of directory creation 
-					if(!$create_dir) {
-					
+					if( ! $create_dir )
+					{
+					   
 						$error_line = str_replace(array('%{upload_path}', '%{upload_edit_link}'), array($thumb_path, BASE . "&C=admin&M=blog_admin&P=edit_upload_pref&id=" . $this->field_settings['options']), $LANG->line('error_file_path'));
 				
-						if(!in_array($error_line, $_SESSION['ngen']['ngen-file-errors'])) {
+						if( ! in_array($error_line, $_SESSION['ngen']['ngen-file-errors']) )
+						{
 							$_SESSION['ngen']['ngen-file-errors'][] = $error_line;
 						}
 						
 						$this->_error_message();
-						return false;
+						
+						return FALSE;
+						
 					}
 					
 				}
 				
-				switch( $image_info['image_type'] ) {
+				switch ( $image_info['image_type'] )
+				{
 					case IMAGETYPE_GIF:
 						$img_saved = imagegif($nm, $thumb_path . $thumb_name);
 						break;
@@ -1192,8 +1264,9 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 				}
 				
 				// Make sure image was saved
-			 	if( !$img_saved ) {
-			 		return false;
+			 	if ( ! $img_saved )
+			 	{
+			 		return FALSE;
 			 	}
 			 	
 			 	imagedestroy($nm);
@@ -1213,11 +1286,12 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 	/**
 	* Modify any of the POST data for a stand alone entry insert
 	*
-	* @return	null
+	* @return	NULL
 	* @since 	Version 1.0.0
 	* @see		http://expressionengine.com/developers/extension_hooks/weblog_standalone_insert_entry/
 	*/
-	function weblog_standalone_insert_entry() {
+	function weblog_standalone_insert_entry()
+	{
 		//echo "Uploading...";
 		return $this->_display_errors_SAEF();
 	}
@@ -1226,12 +1300,14 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 	//
 	//
 	//
-	function _error_message() {
+	function _error_message()
+	{
 		global $IN, $FNS, $SESS, $OUT;
 		
 		// IF SAEF - show errors 
 		//
-		if($IN->GBL('C', 'GET') == '') {
+		if($IN->GBL('C', 'GET') == '')
+		{
 			$saef = TRUE;
 		} else {
 			$saef = FALSE;
@@ -1239,7 +1315,8 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 		//
 		
 		//
-		if($saef) {
+		if($saef)
+		{
 			//
 			$this->_display_errors_SAEF();
 			
@@ -1261,18 +1338,21 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 	//
 	// Inserts error messages in a SAEF
 	//
-	function _display_errors_SAEF() {
+	function _display_errors_SAEF()
+	{
 		global $SESS, $OUT;
 	
 		@session_start();
 				
 		//
 		// Display any errors
-		if( !empty($_SESSION['ngen']['ngen-file-errors']) ) {
+		if ( !empty($_SESSION['ngen']['ngen-file-errors']) )
+		{
 		
 			$error_array = array();
 		
-			foreach($_SESSION['ngen']['ngen-file-errors'] as $key => $error) {
+			foreach($_SESSION['ngen']['ngen-file-errors'] as $key => $error)
+			{
 				$error_array[] = $error;
 			}
 			
@@ -1303,10 +1383,11 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 	 * @param       int    $retstring   The return string format
 	 * @param       int    $si          Whether to use SI prefixes
 	 */
-	function _size_readable($size, $unit = null, $retstring = null, $si = true)
+	function _size_readable($size, $unit = NULL, $retstring = NULL, $si = TRUE)
 	{
 	    // Units
-	    if ($si === true) {
+	    if ($si === TRUE)
+	    {
 	        $sizes = array('B', 'kB', 'MB', 'GB', 'TB', 'PB');
 	        $mod   = 1000;
 	    } else {
@@ -1317,18 +1398,21 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 	 
 	    // Max unit
 	    $unit = array_search((string) $unit, $sizes);
-	    if ($unit === null || $unit === false) {
+	    if ($unit === NULL || $unit === FALSE)
+	    {
 	        $unit = $ii;
 	    }
 	 
 	    // Return string
-	    if ($retstring === null) {
+	    if ($retstring === NULL)
+	    {
 	        $retstring = '%01.2f %s';
 	    }
 	 
 	    // Loop
 	    $i = 0;
-	    while ($unit != $i && $size >= 1024 && $i < $ii) {
+	    while ($unit != $i && $size >= 1024 && $i < $ii)
+	    {
 	        $size /= $mod;
 	        $i++;
 	    }
@@ -1336,6 +1420,7 @@ class Ngen_file_field extends Fieldframe_Fieldtype {
 	    return sprintf($retstring, $size, $sizes[$i]);
 	}
 	//
+	
 }
 
 
